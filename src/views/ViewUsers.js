@@ -31,8 +31,8 @@ const ViewUsers = () => {
     const [isuser, setuser] = useState([]);
     const alluser = async (ids) => {
         try {
-            axios.get(`http://localhost:8000/essay-helpers/api/getusers.php`)
-                // axios.get(`https://graduate-essay-helpers.com/api/getusers.php`)
+            // axios.get(`http://localhost:8000/essay-helpers/api/getusers.php`)
+            axios.get(`https://graduate-essay-helpers.com/api/getusers.php`)
                 .then(res => {
                     console.log(res.data.userlist.userdata)
                     setuser(res.data.userlist.userdata);
