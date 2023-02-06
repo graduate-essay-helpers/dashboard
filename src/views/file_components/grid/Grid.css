@@ -1,0 +1,119 @@
+/** @format */
+
+.grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  grid-gap: 10px;
+  padding: 20px;
+  width: 85%;
+  margin: auto;
+}
+
+.grid_card {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  /* background-color: #fff; */
+  /* width: 100%; */
+  padding: 20px;
+}
+
+.grid_card img {
+  width: 40%;
+  /* margin: 10px 0; */
+}
+
+.grid_card h6 {
+  text-transform: lowercase;
+  font-family: "Comfortaa", cursive;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  display: -webkit-box;
+  -webkit-line-clamp: 1;
+  -webkit-box-orient: vertical;
+
+  /* color: rgb(207, 207, 207); */
+}
+
+.grid_card .btn {
+  display: flex;
+  gap: 5px;
+}
+
+.grid_card .btn:hover {
+  border: none;
+  border-color: transparent;
+}
+
+/* .grid_card p {
+  text-transform: lowercase;
+  font-family: "Comfortaa", cursive;
+  color: rgb(207, 207, 207);
+} */
+
+.edited {
+  position: relative;
+  background: #fff;
+  width: 40%;
+  height: 130px;
+  border: 1px solid #d9d9d9;
+  box-shadow: 5px 5px #bfbfbf;
+  border-radius: 10px;
+  padding: 5px;
+  overflow: hidden;
+  /* text-overflow: ellipsis;
+  display: -webkit-box;
+  -webkit-line-clamp: 5;
+  -webkit-box-orient: vertical; */
+  /* margin: 20px auto; */
+}
+
+/* ==================================================================== */
+
+.edited p {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  display: -webkit-box;
+  -webkit-line-clamp: 5;
+  -webkit-box-orient: vertical;
+}
+
+.edited p::-moz-selection {
+  color: none;
+  background: none;
+}
+
+.edited p::selection {
+  color: none;
+  background: none;
+}
+
+/* ======================================================================== */
+
+.edited p span {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  display: -webkit-box;
+  -webkit-line-clamp: 5;
+  -webkit-box-orient: vertical;
+}
+
+.edited p span::-moz-selection {
+  /* Code for Firefox */
+  color: none;
+  background: none;
+}
+
+.edited p span::selection {
+  color: none;
+  background: none;
+}
+
+.btn .trash-btn {
+  font: "Segoe UI", sans-serif;
+  text-transform: lowercase;
+  font-weight: 400;
+  font-size: 12px;
+  gap: 3px;
+}

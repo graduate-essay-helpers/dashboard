@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 // import { motion } from 'framer-motion';
 
-import './Nav.scss';
+import './Nav.css';
 
 const Nav = () => {
 

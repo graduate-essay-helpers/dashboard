@@ -1,6 +1,7 @@
-import React from "react";
+import React, { useContext } from "react";
 import { Redirect, Link } from "react-router-dom";
 
+import { UserContext } from './context/UserContext';
 // Layout Types
 import { DefaultLayout } from "./layouts";
 
@@ -19,7 +20,16 @@ import Notification from "./views/Notification";
 import Writers from "./views/Writers";
 import Payments from "./views/Payments";
 import Settings from "./views/Settings";
+import Assign from "./views/Assign";
 import Coupon from "./views/Coupon";
+import Chat from "./views/Chat";
+import ManageTask from "./views/ManageTask";
+import Test from "./Test";
+import Blog from "./views/Blog";
+import Editor from "./views/Editor";
+import Add from "./views/editor/Add";
+import Edit from "./views/editor/Edit";
+import EditPost from "./views/editor/EditPost";
 
 export default [
   {
@@ -39,9 +49,49 @@ export default [
     component: UserProfileLite
   },
   {
+    path: "/editor",
+    layout: DefaultLayout,
+    component: Add
+  },
+  {
+    path: "/edit/:postID",
+    layout: DefaultLayout,
+    component: Edit
+  },
+  // {
+  //   path: "/editpost/:postID",
+  //   layout: DefaultLayout,
+  //   component: EditPost
+  // },
+  {
     path: "/payments",
     layout: DefaultLayout,
     component: Payments
+  },
+  {
+    path: "/blog",
+    layout: DefaultLayout,
+    component: Blog
+  },
+  {
+    path: "/chat",
+    layout: DefaultLayout,
+    component: Chat
+  },
+  {
+    path: "/test",
+    layout: DefaultLayout,
+    component: Test
+  },
+  {
+    path: "/manage-order",
+    layout: DefaultLayout,
+    component: ManageTask
+  },
+  {
+    path: "/assign",
+    layout: DefaultLayout,
+    component: Assign
   },
   {
     path: "/settings",

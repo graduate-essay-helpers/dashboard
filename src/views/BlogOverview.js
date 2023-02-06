@@ -1,6 +1,7 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import PropTypes from "prop-types";
 import { Container, Row, Col } from "shards-react";
+import axios from "axios";
 
 import PageTitle from "./../components/common/PageTitle";
 import SmallStats from "./../components/common/SmallStats";
@@ -10,60 +11,81 @@ import NewDraft from "./../components/blog/NewDraft";
 import Discussions from "./../components/blog/Discussions";
 import TopReferrals from "./../components/common/TopReferrals";
 
-const BlogOverview = ({ smallStats }) => (
-  <Container fluid className="main-content-container px-4">
-    {/* Page Header */}
-    <Row noGutters className="page-header py-4">
-      <PageTitle title="Dashboard" subtitle="Dashboard" className="text-sm-left mb-3" />
-    </Row>
+const BlogOverview = ({ smallStats }) => {
 
-    {/* Small Stats Blocks */}
-    <Row>
-      {smallStats.map((stats, idx) => (
-        <Col className="col-lg mb-4" key={idx} {...stats.attrs}>
-          <SmallStats
-            id={`small-stats-${idx}`}
-            variation="1"
-            chartData={stats.datasets}
-            chartLabels={stats.chartLabels}
-            label={stats.label}
-            value={stats.value}
-            percentage={stats.percentage}
-            increase={stats.increase}
-            decrease={stats.decrease}
-          />
+  useEffect(() => {
+    window.scrollTo(0, 0);
+    alluser();
+  }, []);
+
+  const [isuser, setuser] = useState([]);
+  const alluser = async (ids) => {
+    try {
+      // axios.get(`http://localhost:8000/essay-helpers/api/getusers.php`)
+      axios.get(`https://graduate-essay-helpers.com/api/countusers.php`)
+        .then(res => {
+          console.log(res.data.userlist.userdata)
+          setuser(res.data.userlist.userdata);
+        })
+    } catch (error) { throw error; }
+  };
+
+
+  return (
+    <Container fluid className="main-content-container px-4">
+      {/* Page Header */}
+      <Row noGutters className="page-header py-4">
+        <PageTitle title="Dashboard" subtitle="Dashboard" className="text-sm-left mb-3" />
+      </Row>
+
+      {/* Small Stats Blocks */}
+      <Row>
+        {smallStats.map((stats, idx) => (
+          <Col className="col-lg mb-4" key={idx} {...stats.attrs}>
+            <SmallStats
+              id={`small-stats-${idx}`}
+              variation="1"
+              chartData={stats.datasets}
+              chartLabels={stats.chartLabels}
+              label={stats.label}
+              value={stats.value}
+              percentage={stats.percentage}
+              increase={stats.increase}
+              decrease={stats.decrease}
+            />
+          </Col>
+        ))}
+      </Row>
+
+      <Row>
+        {/* Users Overview */}
+        <Col lg="8" md="12" sm="12" className="mb-4">
+          <UsersOverview />
         </Col>
-      ))}
-    </Row>
 
-    <Row>
-      {/* Users Overview */}
-      <Col lg="8" md="12" sm="12" className="mb-4">
-        <UsersOverview />
-      </Col>
+        {/* Users by Device */}
+        <Col lg="4" md="6" sm="12" className="mb-4">
+          <UsersByDevice />
+        </Col>
 
-      {/* Users by Device */}
-      <Col lg="4" md="6" sm="12" className="mb-4">
-        <UsersByDevice />
-      </Col>
+        {/* New Draft */}
+        <Col lg="4" md="6" sm="12" className="mb-4">
+          <NewDraft />
+        </Col>
 
-      {/* New Draft */}
-      <Col lg="4" md="6" sm="12" className="mb-4">
-        <NewDraft />
-      </Col>
+        {/* Discussions */}
+        <Col lg="5" md="12" sm="12" className="mb-4">
+          <Discussions />
+        </Col>
 
-      {/* Discussions */}
-      <Col lg="5" md="12" sm="12" className="mb-4">
-        <Discussions />
-      </Col>
-
-      {/* Top Referrals */}
-      <Col lg="3" md="12" sm="12" className="mb-4">
-        <TopReferrals />
-      </Col>
-    </Row>
-  </Container>
-);
+        {/* Top Referrals */}
+        <Col lg="3" md="12" sm="12" className="mb-4">
+          <TopReferrals />
+        </Col>
+      </Row>
+    </Container>
+  );
+}
 
 BlogOverview.propTypes = {
   /**
@@ -76,8 +98,8 @@ BlogOverview.defaultProps = {
   smallStats: [
     {
       label: "Posts",
-      value: "2,390",
-      percentage: "4.7%",
+      value: "0",
+      percentage: "0%",
       increase: true,
       chartLabels: [null, null, null, null, null, null, null],
       attrs: { md: "6", sm: "6" },
@@ -94,8 +116,8 @@ BlogOverview.defaultProps = {
     },
     {
       label: "Pages",
-      value: "182",
-      percentage: "12.4",
+      value: "46",
+      percentage: "97",
       increase: true,
       chartLabels: [null, null, null, null, null, null, null],
       attrs: { md: "6", sm: "6" },
@@ -112,7 +134,7 @@ BlogOverview.defaultProps = {
     },
     {
       label: "Comments",
-      value: "8,147",
+      value: "3",
       percentage: "3.8%",
       increase: false,
       decrease: true,
@@ -150,7 +172,7 @@ BlogOverview.defaultProps = {
     },
     {
       label: "Subscribers",
-      value: "17,281",
+      value: "0",
       percentage: "2.4%",
       increase: false,
       decrease: true,

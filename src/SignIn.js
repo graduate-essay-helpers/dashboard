@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useState, useContext } from 'react';
 import * as React from 'react';
 import Avatar from '@mui/material/Avatar';
 import Button from '@mui/material/Button';
@@ -17,6 +17,12 @@ import { createTheme, ThemeProvider } from '@mui/material/styles';
 import { Route } from 'react-router-dom';
 import axios from 'axios';
 
+import { UserContext } from './context/UserContext';
+
+export const Axios = axios.create({
+    baseURL: 'http://localhost:8000/api_dashb/',
+});
+
 function Copyright(props) {
     return (
         <Typography variant="body2" color="text.secondary" align="center" {...props}>
@@ -34,42 +40,41 @@ const theme = createTheme();
 
 export default function SignIn() {
 
-    const [user, setUser] = useState({
+    const { loginUser, wait, loggedInCheck } = useContext(UserContext);
+    const [redirect, setRedirect] = useState(false);
+    const [errMsg, setErrMsg] = useState(false);
+    const [formData, setFormData] = useState({
         email: '',
-        pwd: ''
+        password: ''
     });
 
-    const handleChange = (e) => {
-        setUser({ ...user, [e.target.name]: e.target.value });
+    const onChangeInput = (e) => {
+        setFormData({
+            ...formData,
+            [e.target.name]: e.target.value
+        })
     }
 
-    // let navigate = useNavigate();
-    const handleSubmit = (event) => {
-        event.preventDefault();
-        const sendData = {
-            email: user.email,
-            pwd: user.pwd,
+
+    const submitForm = async (e) => {
+        e.preventDefault();
+
+        if (!Object.values(formData).every(val => val.trim() !== '')) {
+            setErrMsg('Please Fill in all Required Fields!');
+            return;
         }
 
-        console.log(sendData);
+        const data = await loginUser(formData);
+        if (data.success) {
+            e.target.reset();
+            setRedirect('Redirecting...');
+            window.location = "/dashboard";
+            await loggedInCheck();
+            return;
+        }
+        setErrMsg(data.message);
+    }
 
-        axios.post('http://localhost:8000/essay-helpers/api/login.php', sendData).then((data) => {
-            if (data.status == '200') {
-                window.localStorage.setItem('email', data.Email);
-                window.localStorage.setItem('userName', data.first_name + ' ' + data.last_name);
-                // history('/dashboard');
-                window.location = "/dashboard";
-            }
-            else {
-                alert('Invalid user details');
-            }
-        })
-        // const data = new FormData(event.currentTarget);
-        // console.log({
-        //     email: data.get('email'),
-        //     password: data.get('password'),
-        // });
-    };
 
     return (
         <ThemeProvider theme={theme}>
@@ -89,7 +94,7 @@ export default function SignIn() {
                     <Typography component="h1" variant="h5">
                         Sign in
                     </Typography>
-                    <Box component="form" onSubmit={handleSubmit} noValidate sx={{ mt: 1 }}>
+                    <Box component="form" onSubmit={submitForm} noValidate sx={{ mt: 1 }}>
                         <TextField
                             margin="normal"
                             required
@@ -100,33 +105,38 @@ export default function SignIn() {
                             autoComplete="email"
                             type="text"
                             autoFocus
-                            onChange={handleChange}
-                            value={user.email}
+                            onChange={onChangeInput}
+                            value={formData.email}
                         />
                         <TextField
                             margin="normal"
                             required
                             fullWidth
-                            name="pwd"
+                            name="password"
                             label="Password"
                             type="password"
-                            id="pwd"
+                            id="password"
                             autoComplete="current-password"
-                            onChange={handleChange}
-                            value={user.password}
+                            onChange={onChangeInput}
+                            value={formData.password}
                         />
                         <FormControlLabel
                             control={<Checkbox value="remember" color="primary" />}
                             label="Remember me"
                         />
-                        <Button
-                            type="submit"
-                            fullWidth
-                            variant="contained"
-                            sx={{ mt: 3, mb: 2 }}
-                        >
-                            Sign In
-                        </Button>
+                        <Grid>
+                            {errMsg && <div className="err-msg">{errMsg}</div>}
+                            {redirect ? redirect :
+                                <Button
+                                    type="submit"
+                                    fullWidth
+                                    variant="contained"
+                                    sx={{ mt: 3, mb: 2 }}
+                                    disabled={wait}
+                                >
+                                    Sign In
+                                </Button>}
+                        </Grid>
                         <Grid container>
                             <Grid item xs>
                                 <Link href="/forgot-password" variant="body2">

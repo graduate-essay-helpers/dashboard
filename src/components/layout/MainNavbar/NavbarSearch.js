@@ -12,13 +12,10 @@ export default () => (
     <InputGroup seamless className="ml-3">
       <InputGroupAddon type="prepend">
         <InputGroupText>
-          <i className="material-icons">search</i>
+          <h3><a href="https://graduate-essay-helpers.com" target="_blank">Go to site</a></h3>
         </InputGroupText>
       </InputGroupAddon>
-      <FormInput
-        className="navbar-search"
-        placeholder="Search for something..."
-      />
+
     </InputGroup>
   </Form>
 );

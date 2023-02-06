@@ -12,20 +12,35 @@ export default function () {
       to: "/orders",
     },
     {
+      title: "Blog Post",
+      htmlBefore: '<i class="material-icons">vertical_split</i>',
+      to: "/blog",
+    },
+    {
+      title: "Manage Order/Task",
+      htmlBefore: '<i class="material-icons">assignment</i>',
+      to: "/manage-order",
+    },
+    {
       title: "Payments",
       htmlBefore: '<i class="material-icons">credit_card</i>',
       to: "/payments",
     },
     {
-      title: "My posts",
+      title: "Send/Upload",
       htmlBefore: '<i class="material-icons">book</i>',
       to: "/upload-work",
     },
-    {
-      title: "Notifications",
-      htmlBefore: '<i class="material-icons">&#xE7F4;</i>',
-      to: "/notifications",
-    },
+    // {
+    //   title: "Notifications",
+    //   htmlBefore: '<i class="material-icons">&#xE7F4;</i>',
+    //   to: "/notifications",
+    // },
+    // {
+    //   title: "Chat",
+    //   htmlBefore: '<i class="material-icons">chat</i>',
+    //   to: "/chat",
+    // },
     // {
     //   title: "Reviews/Comments",
     //   htmlBefore: '<i class="material-icons">comment</i>',

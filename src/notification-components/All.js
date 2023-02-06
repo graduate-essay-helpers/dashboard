@@ -2,7 +2,7 @@ import React from 'react';
 import { Container } from 'shards-react'
 
 import { AppWrap } from './wrapper';
-import './All.scss';
+import './All.css';
 
 const All = () => {
     return (

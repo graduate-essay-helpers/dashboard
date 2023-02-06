@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import { Container } from 'shards-react'
 
 import { Nav, All, Read, Unread, Starred } from '../notification-components';
-import './Notification.scss';
+import './Notification.css';
 
 const Notification = () => {
     const [activeNav, setActiveNav] = useState('#');

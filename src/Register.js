@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { useState } from 'react';
+import { useState, useContext, useEffect } from 'react';
 import Avatar from '@mui/material/Avatar';
 import Button from '@mui/material/Button';
 import CssBaseline from '@mui/material/CssBaseline';
@@ -16,6 +16,8 @@ import { createTheme, ThemeProvider } from '@mui/material/styles';
 
 import axios from 'axios';
 
+import { UserContext } from './context/UserContext';
+
 function Copyright(props) {
     return (
         <Typography variant="body2" color="text.secondary" align="center" {...props}>
@@ -31,30 +33,55 @@ function Copyright(props) {
 
 const theme = createTheme();
 
-export default function SignUp() {
+export const Axios = axios.create({
+    // baseURL: 'http://localhost:8000/api_dashb/',
+    baseURL: 'https://graduate-essay-helpers.com/api_dashb/',
+});
 
-    const [inputs, setInputs] = useState({});
 
-    const handleChange = (event) => {
-        const name = event.target.name;
-        const value = event.target.value;
-        setInputs(values => ({ ...values, [name]: value }))
+const SignUp = () => {
+
+
+    const { registerUser, wait } = useContext(UserContext);
+    const [errMsg, setErrMsg] = useState(false);
+    const [successMsg, setSuccessMsg] = useState(false);
+    const [formData, setFormData] = useState({
+        first_name: '',
+        last_name: '',
+        email: '',
+        username: '',
+        password: ''
+    });
+
+    const onChangeInput = (e) => {
+        setFormData({
+            ...formData,
+            [e.target.name]: e.target.value
+        })
     }
 
-    const handleSubmit = (event) => {
-        event.preventDefault();
+    const submitForm = async (e) => {
+        e.preventDefault();
 
-        axios.post('http://localhost:8000/essay-helpers/api/', inputs).then(function (response) {
-            console.log(response.data);
-            // navigate('/');
-        });
+        if (!Object.values(formData).every(val => val.trim() !== '')) {
+            setSuccessMsg(false);
+            setErrMsg('Please Fill in all Required Fields!');
+            return;
+        }
 
-        const data = new FormData(event.currentTarget);
-        console.log({
-            email: data.get('email'),
-            password: data.get('password'),
-        });
-    };
+        const data = await registerUser(formData);
+        if (data.success) {
+            e.target.reset();
+            setSuccessMsg('You have successfully registered.');
+            setErrMsg(false);
+        }
+        else if (!data.success && data.message) {
+            setSuccessMsg(false);
+            setErrMsg(data.message);
+        }
+
+    }
+
 
     return (
         <ThemeProvider theme={theme}>
@@ -74,7 +101,7 @@ export default function SignUp() {
                     <Typography component="h1" variant="h5">
                         Sign up
                     </Typography>
-                    <Box component="form" noValidate onSubmit={handleSubmit} sx={{ mt: 3 }}>
+                    <Box component="form" onSubmit={submitForm} noValidate sx={{ mt: 3 }}>
                         <Grid container spacing={2}>
                             <Grid item xs={12} sm={6}>
                                 <TextField
@@ -85,7 +112,7 @@ export default function SignUp() {
                                     id="first_name"
                                     label="First Name"
                                     autoFocus
-                                    onChange={handleChange}
+                                    onChange={onChangeInput}
                                 />
                             </Grid>
                             <Grid item xs={12} sm={6}>
@@ -96,7 +123,7 @@ export default function SignUp() {
                                     label="Last Name"
                                     name="last_name"
                                     autoComplete="family-name"
-                                    onChange={handleChange}
+                                    onChange={onChangeInput}
                                 />
                             </Grid>
                             <Grid item xs={12}>
@@ -107,7 +134,7 @@ export default function SignUp() {
                                     label="Email Address"
                                     name="email"
                                     autoComplete="email"
-                                    onChange={handleChange}
+                                    onChange={onChangeInput}
                                 />
                             </Grid>
                             <Grid item xs={12}>
@@ -118,20 +145,24 @@ export default function SignUp() {
                                     label="Username"
                                     name="username"
                                     autoComplete="off"
-                                    onChange={handleChange}
+                                    onChange={onChangeInput}
                                 />
                             </Grid>
                             <Grid item xs={12}>
                                 <TextField
                                     required
                                     fullWidth
-                                    name="pwd"
+                                    name="password"
                                     label="Password"
                                     type="password"
-                                    id="pwd"
+                                    id="password"
                                     autoComplete="new-password"
-                                    onChange={handleChange}
+                                    onChange={onChangeInput}
                                 />
+                            </Grid>
+                            <Grid item xs={12}>
+                                {successMsg && <div className="success-msg">{successMsg}</div>}
+                                {errMsg && <div className="err-msg">{errMsg}</div>}
                             </Grid>
                             <Grid item xs={12}>
                                 {/* <FormControlLabel
@@ -144,6 +175,7 @@ export default function SignUp() {
                             type="submit"
                             fullWidth
                             variant="contained"
+                            // disabled={wait}
                             sx={{ mt: 3, mb: 2 }}
                         >
                             Sign Up
@@ -161,4 +193,8 @@ export default function SignUp() {
             </Container>
         </ThemeProvider>
     );
+
 }
+
+export default SignUp;
+

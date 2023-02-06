@@ -1,12 +1,85 @@
-import React from 'react';
+import React, { useEffect, useState, useMemo } from 'react';
 import PropTypes from "prop-types";
 import { Container, Row, Col } from "shards-react";
+import {
+    Container as Cnt,
+    Card,
+    CardImg,
+    CardText,
+    CardBody,
+    CardTitle,
+} from 'reactstrap';
+import axios from "axios";
 
 import PageTitle from "./../components/common/PageTitle";
 
-import "./../payments.scss";
+import TableContainer from './TableContainer';
+import { SelectColumnFilter } from './filters';
+// import "./../payments.css";
 
 const Payments = () => {
+
+    const [data, setData] = useState([]);
+
+    // ===========================================================
+
+    useEffect(() => {
+        window.scrollTo(0, 0);
+        allpayments();
+    }, []);
+
+    const [ispayment, setpayment] = useState([]);
+    const allpayments = async (ids) => {
+        try {
+            // axios.get(`http://localhost:8000/essay-helpers/api/getpayments.php`)
+            axios.get(`https://graduate-essay-helpers.com/api/getpayments.php`)
+                .then(res => {
+                    console.log(res.data.paymentlist.paymentdata)
+                    setpayment(res.data.paymentlist.paymentdata);
+                })
+        } catch (error) { throw error; }
+    };
+
+    // ==============================================================
+
+
+    const columns = useMemo(
+        () => [
+            {
+                Header: 'Id',
+                accessor: 'id',
+                disableSortBy: true,
+                Filter: SelectColumnFilter,
+                filter: 'equals',
+            },
+            {
+                Header: 'Order id',
+                accessor: 'ord_id',
+            },
+            {
+                Header: 'Email',
+                accessor: 'email',
+            },
+            {
+                Header: 'Ref No',
+                accessor: 'order_id',
+            },
+            {
+                Header: 'Transaction id',
+                accessor: 'transaction_id',
+            },
+            {
+                Header: 'Amount',
+                accessor: 'amount',
+            },
+            {
+                Header: 'Status',
+                accessor: 'status',
+            },
+
+        ],
+        []
+    );
 
     return (
         <Container fluid className="main-content-container px-4">
@@ -14,33 +87,11 @@ const Payments = () => {
                 <h3>Money Management</h3>
                 <PageTitle title="" subtitle="Transaction Summary" className="text-sm-left mb-3" />
             </Row>
-            <Row>
-                <div className='pymnts'>
-                    <div className="card">
-                        <h3>Total Credit</h3>
-                        <div className='card-sm'>
-                            <h4>$23,600.50</h4>
-                        </div>
-                        <p>Amount loaded from paypal/credit_card to system</p>
-                    </div>
-
-                    <div className="card">
-                        <h3>Total Money Paid</h3>
-                        <div className='card-sm'>
-                            <h4>$23,600.50</h4>
-                        </div>
-                        <p>Amount paid too writer and user as withdrawal approved</p>
-                    </div>
-
-                    <div className="card">
-                        <h3>Total Earnings</h3>
-                        <div className='card-sm'>
-                            <h4>$23,600.50</h4>
-                        </div>
-                        <p>Total commission earned</p>
-                    </div>
-                </div>
-            </Row>
+            <TableContainer
+                columns={columns}
+                data={ispayment}
+            // renderRowSubComponent={renderRowSubComponent}
+            />
         </Container>
     )
 }

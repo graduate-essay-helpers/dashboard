@@ -2,7 +2,7 @@ import React from 'react';
 import { Container } from 'shards-react'
 
 import { AppWrap } from './wrapper';
-import "./Unread.scss";
+import "./Unread.css";
 
 const Unread = () => {
     return (

@@ -1,0 +1,48 @@
+/** @format */
+
+.list {
+  width: 90%;
+  display: grid;
+  grid-gap: 5px;
+  margin: auto;
+  position: absolute;
+  position: relative;
+}
+
+.list_card {
+  /* width: 100%; */
+  /* background: #fff; */
+  display: flex;
+  flex-direction: row;
+  /* justify-content: center; */
+}
+
+.list_card img {
+  width: 11%;
+  /* margin: 2vw 5vw 2vw 32vw; */
+}
+
+.list_card .list_content {
+  /* background: red; */
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+}
+
+.list_card .list_content h6 {
+  text-transform: lowercase;
+  font-family: "Comfortaa", cursive;
+  /* color: rgb(207, 207, 207); */
+  /* padding-top: 8vw; */
+}
+
+.list_card .list_content .btn {
+  display: flex;
+  gap: 5px;
+}
+
+.list_card .list_content .btn:hover {
+  border: none;
+  border-color: transparent;
+}

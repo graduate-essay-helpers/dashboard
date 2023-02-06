@@ -34,15 +34,15 @@ class SidebarMainNavbar extends React.Component {
               <img
                 id="main-logo"
                 className="d-inline-block align-top mr-1"
-                style={{ maxWidth: "25px" }}
-                src={require("../../../images/checked.png")}
-                alt="Admin Dashboard"
+                style={{ maxWidth: "150px" }}
+                src={require("../../../images/grad_email_logo.png")}
+                alt="Shards Dashboard"
               />
-              {!hideLogoText && (
+              {/* {!hideLogoText && (
                 <span className="d-none d-md-inline ml-1">
-                  Admin Dashboard
+                  Shards Dashboard
                 </span>
-              )}
+              )} */}
             </div>
           </NavbarBrand>
           {/* eslint-disable-next-line */}
